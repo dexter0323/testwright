@@ -1,0 +1,30 @@
+# Moon / Proto
+.moon/cache/
+.moon/toolchains/
+
+# Node / pnpm
+node_modules/
+pnpm-debug.log*
+
+# Playwright artifacts and interactive browser state
+test-results/
+playwright-report/
+blob-report/
+.playwright/
+.playwright-cli/
+playwright/.auth/
+storage-state*.json
+
+# Private per-app diagnostics
+.logs/
+
+# Python / MkDocs
+.venv/
+__pycache__/
+docs/site/
+
+# Local environment and OS/editor files
+.env
+.env.*
+!.env.example
+.DS_Store

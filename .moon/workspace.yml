@@ -1,0 +1,9 @@
+projects:
+  globs:
+    - apps/*/moon.yml
+  sources:
+    root: .
+    todomvc: apps/todomvc
+vcs:
+  defaultBranch: main
+  provider: github

@@ -1,0 +1,5 @@
+javascript:
+  packageManager: "pnpm"
+  syncPackageManagerField: true
+node: {}
+pnpm: {}

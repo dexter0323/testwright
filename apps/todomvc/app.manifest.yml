@@ -1,0 +1,28 @@
+id: todomvc
+displayName: TodoMVC demo
+description: Public Playwright TodoMVC demo used to exercise the TestWright harness.
+
+targets:
+  demo:
+    baseUrl: https://demo.playwright.dev/todomvc/
+
+source:
+  localPath: null
+  repositoryUrl: https://github.com/microsoft/playwright
+
+discovery:
+  appEntryPoints: []
+  apiSpecs: []
+  testGuidance: []
+  relatedDocs: []
+
+environment:
+  required: []
+  optional: []
+
+testing:
+  defaultTarget: demo
+  suites:
+    - ui
+  auth: none
+  dataStrategy: isolated-browser-context

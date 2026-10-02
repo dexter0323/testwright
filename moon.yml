@@ -1,0 +1,69 @@
+tasks:
+  app-setup:
+    command: "node scripts/setup-app.mjs"
+    options:
+      cache: false
+      runInCI: false
+    description: "Interactively create a standardized app entry, manifest, and starter test layout."
+
+  validate-apps:
+    command: "node scripts/validate-apps.mjs"
+    options:
+      cache: false
+    description: "Validate all app manifests and ensure every apps/ folder is registered."
+
+  install-browsers:
+    command: "pnpm exec playwright install chromium"
+    options:
+      cache: false
+      runInCI: false
+    description: "Install the Chromium browser used by the default test projects."
+
+  install-browsers-ci:
+    command: "pnpm exec playwright install --with-deps chromium"
+    options:
+      cache: false
+      runInCI: false
+    description: "Install Chromium and operating-system browser dependencies on Linux CI runners."
+
+  check:
+    deps:
+      - "validate-apps"
+      - "typecheck"
+      - "lint"
+      - "format-check"
+      - "todomvc:test-ui"
+    options:
+      cache: false
+    description: "Run app validation, static checks, formatting checks, and TodoMVC smoke tests."
+
+  docs:
+    command: "bash scripts/docs/run.sh"
+    options:
+      cache: false
+      runInCI: false
+    description: "Build MkDocs, or pass -- --serve for a live preview."
+
+  docs-build:
+    command: "bash scripts/docs/run.sh --build"
+    options:
+      cache: false
+    description: "Build the documentation site."
+
+  typecheck:
+    command: "pnpm exec tsc --noEmit"
+    description: "Type-check Playwright config, fixtures, reporters, and tests."
+
+  lint:
+    command: "pnpm exec eslint ."
+    description: "Lint repository TypeScript and JavaScript."
+
+  format:
+    command: "pnpm exec prettier --write ."
+    options:
+      cache: false
+    description: "Format repository source and configuration files."
+
+  format-check:
+    command: "pnpm exec prettier --check ."
+    description: "Verify repository source and configuration formatting."

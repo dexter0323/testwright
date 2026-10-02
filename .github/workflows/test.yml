@@ -1,0 +1,32 @@
+name: Test
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  playwright:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: moonrepo/setup-toolchain@v0
+        with:
+          moon-version: "2.5.6"
+          auto-install: true
+          auto-setup: true
+      - run: moon run root:install-browsers-ci
+      - run: moon run root:check
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: playwright-artifacts
+          path: |
+            playwright-report/
+            test-results/
+            .logs/
+          if-no-files-found: ignore
+          retention-days: 14
