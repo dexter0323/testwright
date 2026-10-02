@@ -23,7 +23,6 @@ tasks:
     command: "pnpm exec playwright install --with-deps chromium"
     options:
       cache: false
-      runInCI: false
     description: "Install Chromium and operating-system browser dependencies on Linux CI runners."
 
   check:
