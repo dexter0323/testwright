@@ -6,11 +6,11 @@ Check `.prototools`, then run `moon setup` from the repository root. Toolchains 
 
 ## Browser executable is missing
 
-Run `moon run root:install-browsers`. Install only the browser projects configured in Playwright.
+Run `moon run install-browsers`. Install only the browser projects configured in Playwright.
 
 ## TodoMVC demo is unavailable
 
-The demo is hosted externally. Check network access and the configured `TODOMVC_BASE_URL`. An external demo outage is distinct from a framework/test failure.
+The demo is hosted externally. Check network access and the `demo` target in `apps/todomvc/app.manifest.yml`. An external demo outage is distinct from a framework/test failure.
 
 ## A Moon API task says no suite is declared
 
@@ -18,7 +18,7 @@ That app has no API suite in its manifest. The starter TodoMVC app is UI-only. A
 
 ## Playwright cannot load an app
 
-Run `moon run root:validate-apps`. It checks required manifest fields, configured target, test suites, per-app Moon project file, and explicit Moon workspace registration. Create new apps with `moon run root:app-setup`.
+Run `moon run validate-apps`. It checks required manifest fields and configured targets. Create new apps with `moon run app-setup`.
 
 ## Need more failure evidence
 

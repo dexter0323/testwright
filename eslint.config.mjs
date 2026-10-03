@@ -3,7 +3,7 @@ import tsPlugin from "@typescript-eslint/eslint-plugin";
 
 export default [
   {
-    files: ["**/*.ts"],
+    files: ["**/*.ts", "**/*.mts"],
     languageOptions: {
       parser: tsParser,
       parserOptions: { project: "./tsconfig.json" },
@@ -14,6 +14,7 @@ export default [
   {
     ignores: [
       "node_modules/**",
+      ".venv/**",
       "test-results/**",
       "playwright-report/**",
       "docs/site/**",

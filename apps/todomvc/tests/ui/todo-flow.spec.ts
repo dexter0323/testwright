@@ -1,4 +1,4 @@
-import { expect, test } from "../../../../shared/fixtures/test";
+import { expect, test } from "../../../../shared/fixtures/test.ts";
 
 test("user can add, complete, and remove a todo", async ({ page }) => {
   await page.goto("./");

@@ -202,7 +202,7 @@ test("seed", async ({ page }) => {
 });
 ```
 
-If no seed exists, use `moon run root:app-setup` to register the app and create its manifest and seed layout first; do not hand-create app folders/manifests.
+If no seed exists, use `moon run app-setup` to create its manifest and seed layout first; do not hand-create app folders/manifests.
 
 ### 1.3 Explore the app
 

@@ -6,35 +6,35 @@
 - Moon 2.x
 - Proto (Moon uses it to install the pinned Node.js and pnpm toolchains)
 
-Node.js 26.10.0, pnpm 12.8.1, and Moon 2.5.6 are pinned in `.prototools`. Let Moon/Proto select/install those versions; avoid installing separate project versions globally.
+Node.js 26.10.0, pnpm 12.8.1, Moon 2.5.6, and Python 3.14.8 (for MkDocs) are pinned in `.prototools` and Moon's toolchain config. Let Moon/Proto select/install those versions; avoid installing separate project versions globally.
 
 ## Setup and run
 
 ```sh
 moon setup
-moon run root:install-browsers
-moon run todomvc:test-ui
+moon run install-browsers
+moon run test -- app=todomvc suite=ui
 ```
 
-The first browser install downloads Chromium. The TodoMVC example uses the public demo at `https://demo.playwright.dev/todomvc` and therefore requires network access.
+The first browser install downloads Chromium. The TodoMVC example uses the public demo at `https://demo.playwright.dev/todomvc` and therefore requires network access. Tests and repository tooling scripts are TypeScript and run directly with Node 26's native type stripping; there is no separate script transpiler.
 
 ## Common commands
 
-| Command                             | Purpose                                                                                                            |
-| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `moon run todomvc:test-ui`          | Run TodoMVC UI suite                                                                                               |
-| `moon run root:app-setup`           | Interactively add a standardized app and manifest; pass `-- --id=...` and metadata flags for non-interactive setup |
-| `moon run root:validate-apps`       | Validate app manifests and Moon workspace registration                                                             |
-| `moon run root:check`               | Run manifest, type, lint, format, and example smoke checks                                                         |
-| `moon run root:install-browsers`    | Install Chromium locally                                                                                           |
-| `moon run root:install-browsers-ci` | Install Chromium and OS dependencies on Linux CI                                                                   |
-| `moon run todomvc:test-api`         | Reports that TodoMVC has no API suite; add an API suite to apps that expose an API                                 |
-| `moon run todomvc:test-journeys`    | Reports that TodoMVC has no journey suite; add journeys when the app has cross-layer flows                         |
-| `moon run root:typecheck`           | Type-check Playwright code                                                                                         |
-| `moon run root:lint`                | Lint TypeScript                                                                                                    |
-| `moon run root:docs-build`          | Build documentation                                                                                                |
-| `moon run root:docs -- --serve`     | Serve documentation locally                                                                                        |
+| Command                                 | Purpose                                                          |
+| --------------------------------------- | ---------------------------------------------------------------- |
+| `moon run test -- app=todomvc suite=ui` | Run TodoMVC UI suite                                             |
+| `moon run test -- app=erp suite=api`    | Select an app and API suite                                      |
+| `moon run test-ci -- app=erp suite=api` | Same selection without terminal interactivity (for CI)           |
+| `moon run test -- app=erp`              | Run all suites declared for an app                               |
+| `moon run app-setup`                    | Interactively add a standardized app manifest and test folders   |
+| `moon run validate-apps`                | Validate app manifests                                           |
+| `moon run check`                        | Run app validation, type, lint, format, and TodoMVC smoke checks |
+| `moon run install-browsers`             | Install Chromium locally                                         |
+| `moon run typecheck`                    | Type-check Playwright code                                       |
+| `moon run lint`                         | Lint TypeScript                                                  |
+| `moon run docs-build`                   | Build documentation                                              |
+| `moon run docs -- --serve`              | Serve documentation locally                                      |
 
 ## Environment configuration
 
-Copy `.env.example` values into your local environment as needed. Do not commit credentials, browser storage state, or private logs. To choose a different app environment, set `APP_<APP_ID>_TARGET` to a target name declared in that app's manifest; arbitrary URLs cannot be introduced through environment overrides.
+Copy `.env.example` values into your local environment as needed. Do not commit credentials, browser storage state, or private logs. To choose another environment, pass `target=<name>` to the selected-app test command; the name must exist in the app manifest.

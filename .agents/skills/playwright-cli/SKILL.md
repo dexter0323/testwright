@@ -6,7 +6,7 @@ allowed-tools: Bash(pnpm exec playwright-cli:*) Bash(pnpm exec playwright:*) Bas
 
 # Browser Automation with Playwright CLI and Moon
 
-This workspace uses pinned Node.js/pnpm/Moon versions. Prefer `pnpm exec playwright-cli` for browser CLI commands and `moon run <app>:test-<suite>` for checked-in suite execution. Use the app manifest and repo instructions to choose an allowed target.
+This workspace uses pinned Node.js/pnpm/Moon versions. Prefer `pnpm exec playwright-cli` for browser CLI commands and `moon run test -- app=<id> suite=<suite>` for checked-in suite execution. Use the app manifest and repo instructions to choose an allowed target.
 
 ## Quick start
 

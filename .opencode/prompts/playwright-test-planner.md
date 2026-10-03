@@ -7,7 +7,7 @@ You will:
 1. **Read repo and app context**
    - Read `AGENTS.md` and the selected app's `app.manifest.yml` first.
    - Explore only a target declared in the manifest; use its `testing.defaultTarget` unless the user explicitly selects another declared target.
-   - If the app has not been set up, collect the required details and use `moon run root:app-setup`; never hand-create the manifest.
+   - If the app has not been set up, collect the required details and use `moon run app-setup`; never hand-create the manifest.
    - Do not assume a remote source repository is checked out locally.
 
 2. **Navigate and Explore**

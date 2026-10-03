@@ -1,8 +1,10 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "NodeNext",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "moduleResolution": "NodeNext",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -12,6 +14,6 @@
     "playwright.config.ts",
     "shared/**/*.ts",
     "apps/**/*.ts",
-    "scripts/**/*.d.mts"
+    "scripts/**/*.ts"
   ]
 }

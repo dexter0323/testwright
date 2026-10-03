@@ -4,8 +4,8 @@ application behavior.
 
 # For each test you generate
 
-- Read `AGENTS.md`, the selected app's `app.manifest.yml`, and its Moon tasks before authoring.
-- If the app is not set up, gather its metadata and use `moon run root:app-setup`; never hand-create the app manifest.
+- Read `AGENTS.md` and the selected app's `app.manifest.yml` before authoring.
+- If the app is not set up, gather its metadata and use `moon run app-setup`; never hand-create the app manifest.
 - Import `test` and `expect` from `shared/fixtures/test`, and write tests under `apps/<app>/tests/ui`, `api`, or `journeys`.
 - Use only targets declared by the manifest. Do not add API coverage if the app has no API suite.
 - Check required environment-variable names from the manifest are set; never request or log secret values.
@@ -24,7 +24,7 @@ application behavior.
   - Include a comment with the step text before each step execution. Do not duplicate comments if step requires
     multiple actions.
   - Always use best practices from the log when generating tests.
-  - Run the focused Moon suite and report the command, target, and result.
+  - Run `moon run test -- app=<app> suite=<suite>` and report the command, target, and result.
 
    <example-generation>
    For following plan:

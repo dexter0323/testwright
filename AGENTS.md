@@ -5,11 +5,11 @@ TestWright is a multi-app Playwright UI/API test harness. Use TypeScript for com
 ## Start with the target app
 
 1. Identify the app from the user request; ask if ambiguous.
-2. Read `apps/<app>/app.manifest.yml` and its `moon.yml` before exploring.
+2. Read `apps/<app>/app.manifest.yml` and relevant app guidance before exploring.
 3. Follow manifest targets and source links. Never infer that an external source repo is checked out locally.
 4. Default to the manifest's non-production target. Do not navigate to production unless the user explicitly requests it.
 
-Before adding an app folder, use `moon run root:app-setup`. Do not hand-create an app manifest or folder. App test tasks validate all app manifests and workspace registration before running; resolve validation errors rather than bypassing the check.
+Before adding an app folder, use `moon run app-setup`. Do not hand-create an app manifest or folder. The root test task validates all app manifests before running; resolve validation errors rather than bypassing the check.
 
 ## Writing tests
 
@@ -29,8 +29,8 @@ Before destructive or irreversible actions (delete, submit payment, send, accept
 
 ## Running and debugging
 
-- Use Moon targets, for example `moon run todomvc:test-ui` or `moon run todomvc:test-api`.
-- Build/serve documentation with `moon run root:docs-build` and `moon run root:docs -- --serve`.
+- Use `moon run test -- app=<app-id> suite=<ui|api|journeys|all>` to select app tests.
+- Build/serve documentation with `moon run docs-build` and `moon run docs -- --serve`.
 - Inspect `.logs/<app>/runs/<run-id>/` plus Playwright traces/screenshots/reports when debugging.
 - Never copy credentials, cookies, authorization headers, or tokens into logs, plans, reports, or commits.
 

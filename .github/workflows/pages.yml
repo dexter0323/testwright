@@ -1,8 +1,6 @@
 name: Deploy documentation
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -28,8 +26,7 @@ jobs:
           moon-version: "2.5.6"
           auto-install: true
           auto-setup: true
-      - uses: astral-sh/setup-uv@v6
-      - run: moon run root:docs-build
+      - run: moon run docs-build
       - uses: actions/upload-pages-artifact@v4
         with:
           path: docs/site

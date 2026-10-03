@@ -4,6 +4,12 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
 
+if [[ ! -x .venv/bin/mkdocs || ! -x .venv/bin/python ]]; then
+  echo "Creating .venv with pinned Python and installing docs/requirements-mkdocs.txt..."
+  "$(proto bin python 3.14.8)" -m venv .venv
+  .venv/bin/python -m pip install --disable-pip-version-check -r docs/requirements-mkdocs.txt
+fi
+
 MODE="build"
 ARGS=()
 while (($#)); do
@@ -11,7 +17,7 @@ while (($#)); do
     --serve|-s) MODE="serve"; shift ;;
     --build|-b) MODE="build"; shift ;;
     --help|-h)
-      printf 'Usage: moon run root:docs-build | moon run root:docs -- --serve [mkdocs args]\n'
+      printf 'Usage: moon run docs-build | moon run docs -- --serve [mkdocs args]\n'
       exit 0
       ;;
     *) ARGS+=("$1"); shift ;;
@@ -19,8 +25,8 @@ while (($#)); do
 done
 
 if [[ "$MODE" == "serve" ]]; then
-  exec uv run --with-requirements docs/requirements-mkdocs.txt mkdocs serve -f mkdocs.yml "${ARGS[@]}"
+  exec .venv/bin/mkdocs serve -f mkdocs.yml "${ARGS[@]}"
 fi
 
-uv run --with-requirements docs/requirements-mkdocs.txt mkdocs build -f mkdocs.yml "${ARGS[@]}"
+.venv/bin/mkdocs build -f mkdocs.yml "${ARGS[@]}"
 printf '\nStatic documentation site: %s/docs/site/index.html\n' "$ROOT"

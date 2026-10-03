@@ -1,9 +1,8 @@
+defaultProject: testwright
+
 projects:
-  globs:
-    - apps/*/moon.yml
-  sources:
-    root: .
-    todomvc: apps/todomvc
+  testwright: "."
+
 vcs:
   defaultBranch: main
   provider: github

@@ -9,9 +9,11 @@ docs/content/               Maintained MkDocs source
 .logs/<app>/runs/<run-id>/  Ignored app-specific diagnostics
 ```
 
-## Moon projects and Playwright projects
+## One Moon project, many apps
 
-Moon projects identify repo units and provide commands such as `moon run todomvc:test-ui`. Playwright projects select test configurations (suite, browser, or environment) inside the shared `playwright.config.ts`. An app can have multiple Playwright projects while remaining one Moon project.
+Moon manages one root workspace project, its shared toolchain, and shared tasks. App directories under `apps/` are app/test boundaries with manifests; they do not have their own Moon project or package manifest. Select an app and suite with `moon run test -- app=todomvc suite=ui`; use `suite=all` to run the app's declared suites. Since the workspace project is the default, commands have no project prefix.
+
+Playwright projects are generated from app manifests and configure the runner per app/suite. They are distinct from Moon projects.
 
 ## Test surfaces
 

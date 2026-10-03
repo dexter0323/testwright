@@ -1,8 +1,8 @@
 # App manifests
 
-Create apps with `moon run root:app-setup`. The interactive command requests required app identity, targets, suites, source locations, discovery references, environment variable names, auth strategy, and test-data strategy; it validates the manifest before creating the starter layout and registers the app in `.moon/workspace.yml`. Review and enrich discovery references afterward. Avoid hand-creating app manifests so every app uses the same shape. In scripts/CI, the same setup command accepts `--id`, `--display-name`, `--description`, `--base-url`, `--target`, `--suites`, `--auth`, and `--data-strategy` flags.
+Create apps with `moon run app-setup`. The interactive command requests app identity, targets, suites, source locations, discovery references, environment variable names, auth strategy, and test-data strategy; it validates the manifest and creates standard test folders. App directories do not need their own `moon.yml` or `package.json`; Moon, pnpm, and Playwright configuration are shared at the root. Review/enrich discovery references afterward. Avoid hand-creating manifests so every app has the same shape. The setup script also accepts non-interactive flags such as `--id`, `--display-name`, and `--base-url`.
 
-Test targets depend on manifest validation. Missing or malformed manifests, missing Moon app configuration, or unregistered apps cause the validation task and Playwright project loading to fail with a repair hint. Use `moon run root:validate-apps` to validate the whole workspace.
+Test runs depend on manifest validation. Missing or malformed manifests cause the validation task and Playwright project loading to fail with a repair hint. Use `moon run validate-apps` to validate all apps.
 
 Each app has a committed `apps/<app>/app.manifest.yml`. Treat it as the concise discovery map for developers and AI agents—not as a copy of all application documentation.
 

@@ -1,9 +1,7 @@
 name: Test
 
 on:
-  pull_request:
-  push:
-    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -18,8 +16,9 @@ jobs:
           moon-version: "2.5.6"
           auto-install: true
           auto-setup: true
-      - run: moon run root:install-browsers-ci
-      - run: moon run root:check
+      - run: moon run install-browsers-ci
+      - run: moon run check
+      - run: moon run test-ci -- app=todomvc suite=ui
       - uses: actions/upload-artifact@v7
         if: always()
         with:

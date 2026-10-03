@@ -1,47 +1,17 @@
 import { defineConfig } from "@playwright/test";
-import { readdirSync, readFileSync } from "node:fs";
-import { resolve } from "node:path";
-import { parse } from "yaml";
-import { validateAppManifest } from "./scripts/app-manifest.mjs";
+import { readdirSync } from "node:fs";
+import { readAppManifestSync } from "./scripts/app-manifest.ts";
 
-const globalSetup = resolve(__dirname, "shared/global-setup.ts");
+const globalSetup = `${import.meta.dirname}/shared/global-setup.ts`;
 process.env.TESTWRIGHT_RUN_ID ??= `run-${new Date().toISOString().replaceAll(":", "-")}-${process.pid}`;
 
-type AppManifest = {
-  id: string;
-  targets: Record<string, { baseUrl: string }>;
-  testing: { defaultTarget: string; suites: Array<"ui" | "api" | "journeys"> };
-};
-
 function createProjects() {
-  const appDirectories = readdirSync(resolve(__dirname, "apps"), {
+  const appDirectories = readdirSync(`${import.meta.dirname}/apps`, {
     withFileTypes: true,
   });
   const projects = [];
   for (const entry of appDirectories.filter((item) => item.isDirectory())) {
-    const manifestPath = resolve(
-      __dirname,
-      "apps",
-      entry.name,
-      "app.manifest.yml",
-    );
-    let manifest: AppManifest;
-    try {
-      manifest = parse(readFileSync(manifestPath, "utf8")) as AppManifest;
-    } catch (error) {
-      if (error instanceof Error && "code" in error && error.code === "ENOENT")
-        throw new Error(
-          `App "${entry.name}" has no manifest. Create it with: moon run root:app-setup`,
-        );
-      throw new Error(
-        `Unable to parse ${manifestPath}: ${error instanceof Error ? error.message : String(error)}`,
-      );
-    }
-    const errors = validateAppManifest(manifest, entry.name);
-    if (errors.length)
-      throw new Error(
-        `Invalid app manifest ${manifestPath}:\n${errors.map((item) => `- ${item}`).join("\n")}`,
-      );
+    const manifest = readAppManifestSync(entry.name);
 
     const target = manifest.targets[manifest.testing.defaultTarget];
     const envKey = `APP_${entry.name.toUpperCase().replaceAll("-", "_")}_TARGET`;
@@ -55,6 +25,17 @@ function createProjects() {
     const baseURL = manifest.targets[selectedTarget].baseUrl;
 
     for (const suite of manifest.testing.suites) {
+      if (
+        process.env.TESTWRIGHT_APP &&
+        process.env.TESTWRIGHT_APP !== entry.name
+      )
+        continue;
+      if (
+        process.env.TESTWRIGHT_SUITE &&
+        process.env.TESTWRIGHT_SUITE !== "all" &&
+        process.env.TESTWRIGHT_SUITE !== suite
+      )
+        continue;
       const suiteMatch =
         suite === "ui"
           ? [
@@ -71,24 +52,54 @@ function createProjects() {
   }
   if (projects.length === 0)
     throw new Error(
-      "No Playwright app projects found. Add an app with: moon run root:app-setup",
+      "No Playwright app projects found. Add an app with: moon run app-setup",
     );
   return projects;
 }
 
-const projectList = createProjects();
-const workspace = parse(
-  readFileSync(resolve(__dirname, ".moon/workspace.yml"), "utf8"),
-) as { projects?: { sources?: Record<string, string> } };
-const registeredSources = workspace.projects?.sources ?? {};
-for (const project of projectList) {
-  const appId = project.name.slice(0, project.name.lastIndexOf("-"));
-  if (registeredSources[appId] !== `apps/${appId}`) {
+function verifyCliAppSelection(): void {
+  const appId = process.env.TESTWRIGHT_APP;
+  const suite = process.env.TESTWRIGHT_SUITE ?? "all";
+  if (!appId) return;
+  const manifest = readAppManifestSync(appId);
+  if (
+    suite !== "all" &&
+    !manifest.testing.suites.includes(
+      suite as (typeof manifest.testing.suites)[number],
+    )
+  ) {
     throw new Error(
-      `App "${appId}" is not registered in .moon/workspace.yml. Re-run app setup or add projects.sources.${appId}: apps/${appId}.`,
+      `App "${appId}" does not declare suite "${suite}". Declared suites: ${manifest.testing.suites.join(", ")}.`,
     );
   }
+  const requiredEnvironment = manifest.environment.required.filter(
+    (name) => !process.env[name],
+  );
+  if (requiredEnvironment.length) {
+    throw new Error(
+      `App "${appId}" is missing required environment variables: ${requiredEnvironment.join(", ")}.`,
+    );
+  }
+  const targetName =
+    process.env[`APP_${appId.toUpperCase().replaceAll("-", "_")}_TARGET`] ??
+    manifest.testing.defaultTarget;
+  if (!manifest.targets[targetName]) {
+    throw new Error(
+      `Target "${targetName}" is not declared for app "${appId}". Allowed targets: ${Object.keys(manifest.targets).join(", ")}.`,
+    );
+  }
+  if (["prod", "production"].includes(targetName.toLowerCase())) {
+    throw new Error(
+      "Production testing is not enabled by the generic runner. Use a purpose-built reviewed workflow for production checks.",
+    );
+  }
+  process.env[`APP_${appId.toUpperCase().replaceAll("-", "_")}_TARGET`] =
+    targetName;
+  process.env.TESTWRIGHT_APP = appId;
 }
+
+const projectList = createProjects();
+verifyCliAppSelection();
 
 export default defineConfig({
   globalSetup,
@@ -100,7 +111,7 @@ export default defineConfig({
   reporter: [
     ["list"],
     ["html", { outputFolder: "playwright-report", open: "never" }],
-    [resolve(__dirname, "shared/reporters/diagnostics-reporter.ts")],
+    [`${import.meta.dirname}/shared/reporters/diagnostics-reporter.ts`],
   ],
   outputDir: "test-results",
   use: {
