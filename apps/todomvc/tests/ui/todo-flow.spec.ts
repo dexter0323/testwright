@@ -14,7 +14,6 @@ test("user can add, complete, and remove a todo", async ({ page }) => {
   await todo.getByRole("checkbox").check();
   await expect(todo).toHaveClass(/completed/);
 
-  await todo.hover();
-  await todo.getByRole("button", { name: "Delete" }).click();
+  await page.getByRole("button", { name: "Clear completed" }).click();
   await expect(todo).toHaveCount(0);
 });

@@ -2,6 +2,8 @@
 
 Playwright Test executes TypeScript `.spec.ts` files. Markdown is optional planning/context for flows whose requirements benefit from separate review; it is not an executable test format.
 
+Browser mode is independent of test code: the default runner is headless, and `moon run test -- app=<id> suite=ui headed=true` shows the browser during execution.
+
 ## UI example
 
 ```ts

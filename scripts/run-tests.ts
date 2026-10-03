@@ -63,6 +63,8 @@ if (!manifest.targets[targetName]) {
   );
   process.exit(2);
 }
+
+const headed = options.headed === "true" || options.headed === "1";
 if (!isCiInvocation && process.stdin.isTTY && process.stdout.isTTY) {
   const { createInterface } = await import("node:readline/promises");
   const terminal = createInterface({
@@ -89,7 +91,10 @@ if (suite !== "all" && !manifest.testing.suites.includes(suite as AppSuite)) {
   process.exit(2);
 }
 
-const result = spawnSync("pnpm", ["exec", "playwright", "test"], {
+const playwrightArgs = ["exec", "playwright", "test"];
+if (headed) playwrightArgs.push("--headed");
+
+const result = spawnSync("pnpm", playwrightArgs, {
   stdio: "inherit",
   shell: process.platform === "win32",
   env: {

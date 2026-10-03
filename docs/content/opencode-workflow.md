@@ -8,6 +8,8 @@ Describe the outcome you want, for example: “In the ERP staging app, create an
 - **Playwright CLI:** concise command-oriented browser exploration, recording, snapshots, and session control.
 - **Playwright Test:** deterministic execution of committed tests locally and in CI.
 
+Playwright Test is headless by default. To show the browser during a local Moon test, pass `headed=true`, for example `moon run test -- app=todomvc suite=ui headed=true`. With no flag it stays headless. Direct Playwright CLI usage also supports `pnpm exec playwright test --headed`.
+
 The agent should choose an appropriate browser tool for the request. MCP/CLI exploration is not itself a CI check.
 
 OpenCode's Playwright MCP server is configured in `opencode.json`. For GitHub Pages deployment, enable Pages for the repository with **Settings → Pages → Build and deployment → GitHub Actions**. Private repositories require a GitHub plan that supports Pages for private repositories; repository visibility remains private by default.

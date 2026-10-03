@@ -20,20 +20,21 @@ The first browser install downloads Chromium. The TodoMVC example uses the publi
 
 ## Common commands
 
-| Command                                 | Purpose                                                          |
-| --------------------------------------- | ---------------------------------------------------------------- |
-| `moon run test -- app=todomvc suite=ui` | Run TodoMVC UI suite                                             |
-| `moon run test -- app=erp suite=api`    | Select an app and API suite                                      |
-| `moon run test-ci -- app=erp suite=api` | Same selection without terminal interactivity (for CI)           |
-| `moon run test -- app=erp`              | Run all suites declared for an app                               |
-| `moon run app-setup`                    | Interactively add a standardized app manifest and test folders   |
-| `moon run validate-apps`                | Validate app manifests                                           |
-| `moon run check`                        | Run app validation, type, lint, format, and TodoMVC smoke checks |
-| `moon run install-browsers`             | Install Chromium locally                                         |
-| `moon run typecheck`                    | Type-check Playwright code                                       |
-| `moon run lint`                         | Lint TypeScript                                                  |
-| `moon run docs-build`                   | Build documentation                                              |
-| `moon run docs -- --serve`              | Serve documentation locally                                      |
+| Command                                             | Purpose                                                          |
+| --------------------------------------------------- | ---------------------------------------------------------------- |
+| `moon run test -- app=todomvc suite=ui`             | Run TodoMVC UI suite                                             |
+| `moon run test -- app=erp suite=api`                | Select an app and API suite                                      |
+| `moon run test -- app=todomvc suite=ui headed=true` | Show the browser during UI tests; omitted means headless         |
+| `moon run test-ci -- app=erp suite=api`             | Same selection without terminal interactivity (for CI)           |
+| `moon run test -- app=erp`                          | Run all suites declared for an app                               |
+| `moon run app-setup`                                | Interactively add a standardized app manifest and test folders   |
+| `moon run validate-apps`                            | Validate app manifests                                           |
+| `moon run check`                                    | Run app validation, type, lint, format, and TodoMVC smoke checks |
+| `moon run install-browsers`                         | Install Chromium locally                                         |
+| `moon run typecheck`                                | Type-check Playwright code                                       |
+| `moon run lint`                                     | Lint TypeScript                                                  |
+| `moon run docs-build`                               | Build documentation                                              |
+| `moon run docs -- --serve`                          | Serve documentation locally                                      |
 
 ## Environment configuration
 
